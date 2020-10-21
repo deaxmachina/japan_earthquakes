@@ -10,6 +10,7 @@ import BigEarthquakesLayer from "./BigEarthquakesLayer";
 import EarthquakeScatterLayer from "./EarthquakesScatterLayer"
 import BigEarthquakePopup from "./BigEarthquakePopup";
 
+// Add explanation about maps here 
 
 /* VARIABLES */
 const mapLoadLatitude = 36.2048;
