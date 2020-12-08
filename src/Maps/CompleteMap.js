@@ -21,7 +21,6 @@ const mapWidth = '100%';
 const mapHeight = '100vh';
 const mapLoadZoom =4.7;
 const mapStyle = "mapbox://styles/deaxmachina/ckeu39j8b06xb19r7hfionx3y/draft"
-const REACT_APP_MAPBOX_TOKEN="pk.eyJ1IjoiZGVheG1hY2hpbmEiLCJhIjoiY2tkNXYxdmtqMWllYTJybzNkOWw1M2QxbSJ9.tK8g5jQ10y8F4wOfPdb2Bg"
 
 /********** HEPLER FUNCTIONS **********/
 
