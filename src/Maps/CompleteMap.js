@@ -150,8 +150,8 @@ const CompleteMap = () => {
       <ReactMapGL 
         {...viewport} 
         {...settings} 
-        //mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
-        mapboxApiAccessToken={REACT_APP_MAPBOX_TOKEN}
+        mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
+        //mapboxApiAccessToken={REACT_APP_MAPBOX_TOKEN}
         mapStyle={mapStyle}
         onViewportChange={viewport => {
           setViewport(viewport)
