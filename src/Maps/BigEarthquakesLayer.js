@@ -14,12 +14,15 @@ const BigEarthquakesLayer = ({bigEarthquakes}) => {
 
   const onClickMarker = eq => {
     setPopupInfo({
-      name: eq.name,
+      name: eq.nameEnglish,
+      nameJapanese: eq.nameJapanese,
       date: eq.date,
       magnitude: eq.magnitude,
       deaths: eq.deaths,
       longitude: eq.longitude,
-      latitude: eq.latitude
+      latitude: eq.latitude,
+      url: eq.url,
+      img: eq.img
     });
   };
   const renderPopup = () => {

@@ -1,0 +1,121 @@
+:root {
+  --red-colour: #370617;
+  --black-colour: #161a1d;
+  --white-colour: #fffcf2;
+}
+
+svg {
+  overflow: visible;
+}
+
+/* for the whole section */
+#pinned-graph-container {
+  background-color: var(--black-colour);
+  color: var(--white-colour);
+}
+
+/* For the heading and text area */
+.heading-wrapper {
+  width: 60%;
+  margin: auto;
+  margin-bottom: 5%;
+  padding: 50px;
+  text-align: center;
+}
+
+.pinned-graph-heading {
+  font-size: 50px;
+  color: var(--white-colour);
+}
+
+.pinned-graph-subheading {
+  font-size: 30px;
+}
+
+.pinned-graph-p {
+  width: 50%;
+  margin: auto;
+}
+
+/* Main container for the chart and text */
+#chart-and-steps{
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 200px;
+}
+
+#chart-wrapper{
+}
+#scroll-steps {
+}
+
+
+/* Styles for the info boxes */
+.step {
+  font-family: 'Nunito Sans';
+  margin-bottom: 70vh;
+  opacity: 0.2;
+}
+
+.info-card {
+  text-align: center;
+  padding: 15px;
+  border-radius: 20px;
+  border: 4px solid var(--red-colour);
+  color: var(--black-colour);
+  background-color: var(--white-colour);
+  box-shadow: 0px 0px 20px 20px rgba(0, 0, 0, 0.2);
+}
+
+.info-card .earthquake-name {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.info-card .earthquake-name-ja {
+  color: grey;
+}
+
+.info-card .earthquake-date {
+  text-transform: uppercase;
+}
+
+.info-card .number {
+  font-weight: bold;
+}
+
+.info-card hr {
+  border: 0;
+  border-bottom: 2px solid var(--red-colour);
+  border-radius: 15px;
+  width: 70%;
+  opacity: 0.9;
+}
+
+.info-year {
+  font-size: 40px;
+  text-align: center;
+  padding: 10px;
+}
+
+
+
+
+
+/* styles for the scrolling text boxes */
+.active {
+  opacity: 1 !important;
+}
+
+#kanto-section {
+  width: 100%;
+  height: 900px;
+  margin: auto;
+  text-align: center;
+  margin-top: 100px;
+}
+#kanto-section h1 {
+  color: black;
+  padding-top: 10%;
+}
+

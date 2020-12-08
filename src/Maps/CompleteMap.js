@@ -4,18 +4,20 @@ import { json, csv } from "d3";
 //import ControlPanel from "./ControlPanel";
 import ControlPanelMaterial from "./ControlPanelMaterial";
 import * as earthquake_data from "../data/earthquakes_min6_top1000.geojson";
-import big_earthquakes from "../data/earthquake_sample.csv";
+import big_earthquakes from "../data/earthquakes_sample.csv";
 
 import BigEarthquakesLayer from "./BigEarthquakesLayer";
 import EarthquakeScatterLayer from "./EarthquakesScatterLayer"
 import BigEarthquakePopup from "./BigEarthquakePopup";
+
+import "./Maps.css"
 
 // Add explanation about maps here 
 
 /* VARIABLES */
 const mapLoadLatitude = 36.2048;
 const mapLoadLongitude = 138.2529;
-const mapWidth = '100vw';
+const mapWidth = '100%';
 const mapHeight = '100vh';
 const mapLoadZoom =4.7;
 const mapStyle = "mapbox://styles/deaxmachina/ckeu39j8b06xb19r7hfionx3y/draft"
@@ -127,14 +129,26 @@ const CompleteMap = () => {
       setBigEarthquakes(null)
     }
 
-
   }
+
+  /// manage the zoom options /// 
+  const [settings, setsettings] = useState({
+    dragPan: false,
+    dragRotate: false,
+    scrollZoom: false,
+    touchZoom: true,
+    touchRotate: true,
+    keyboard: true,
+    doubleClickZoom: true,
+    doubleClickZoomOut: true
+    });
 
 
   return (
     <div className="map-container">
       <ReactMapGL 
         {...viewport} 
+        {...settings} 
         mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
         mapStyle={mapStyle}
         onViewportChange={viewport => {

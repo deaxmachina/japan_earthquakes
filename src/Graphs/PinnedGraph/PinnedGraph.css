@@ -1,0 +1,54 @@
+:root {
+  --red-colour: #370617;
+  --black-colour: #161a1d;
+  --white-colour: #fef9ef;
+}
+
+/* for the whole section */
+#pinned-graph-container {
+  background-color: var(--black-colour);
+  color: var(--white-colour);
+}
+
+/* For the heading and text area */
+.heading-wrapper {
+  width: 70%;
+  margin: auto;
+  margin-bottom: 5%;
+  padding: 40px;
+  text-align: center;
+}
+
+/* Main container for the chart and text */
+#chart-and-steps{
+  display: flex;
+  justify-content: space-evenly;
+}
+
+#chart-wrapper{
+
+}
+#scroll-steps {
+}
+
+
+.step {
+  font-family: 'Nunito Sans';
+  padding: 20px;
+  margin-bottom: 70vh;
+  border: 10px solid var(--red-colour);
+  border-radius: 20px;
+  opacity: 0.2;
+  color: var(--black-colour);
+  background-color: var(--white-colour);
+}
+
+/* styles for the scrolling text boxes */
+.active {
+  opacity: 1 !important;
+}
+
+
+
+
+
