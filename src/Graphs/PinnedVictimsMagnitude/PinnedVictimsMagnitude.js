@@ -16,6 +16,10 @@ const PinnedVictimsMagnitude = () => {
   const victimsCircleRef = useRef();
   const magnitudeGraphRef = useRef();
   const magnitudesAxisRef = useRef();
+  let steps = [
+    useRef(), useRef(), useRef(), useRef(), useRef(), useRef(), 
+    useRef(), useRef(), useRef(), useRef(), useRef(), useRef(), useRef()
+  ]
 
   /// Dimensions ///
   const width = 800;
@@ -194,13 +198,14 @@ const PinnedVictimsMagnitude = () => {
   }
   }, [data, selectedEarthquake])
 
+gsap.registerPlugin(ScrollTrigger);
 // GSAP Code //
 useEffect(() => {
-  if (data) {
-    gsap.registerPlugin(ScrollTrigger);
+  if (data) {   
     ScrollTrigger.create({
         trigger: svgRef.current,
-        endTrigger: `#step-${data.length - 1}`, // id of the last text box 
+        //endTrigger: `#step-${data.length - 1}`, // id of the last text box 
+        endTrigger: steps[data.length - 1].current,
         start: 'center center',
         end: 'center top',
         pin: true,
@@ -211,7 +216,8 @@ useEffect(() => {
     data.forEach( (d, i) => {
       if (i !== 0){
         ScrollTrigger.create({
-          trigger: `#step-${i}`,
+          //trigger: `#step-${i}`,
+          trigger: steps[i].current,
           start: 'top center',
           onEnter: () => setSelectedEarthquake(`earthquake-${i}`),
           onLeaveBack: () => setSelectedEarthquake(`earthquake-${i-1}`),
@@ -221,7 +227,8 @@ useEffect(() => {
       }
       else if(i === 0) {
         ScrollTrigger.create({
-          trigger: `#step-0`,
+          //trigger: `#step-0`,
+          trigger: steps[0].current,
           start: 'top center',
           onEnter: () => setSelectedEarthquake(`earthquake-0`),
           markers: false,
@@ -229,6 +236,7 @@ useEffect(() => {
         });
       } 
     });
+
     gsap.utils.toArray('.step').forEach(step => {
       ScrollTrigger.create({
         trigger: step,
@@ -240,7 +248,7 @@ useEffect(() => {
         id: 'toggle-active-class'
       });
     });
-    }
+    }    
 }, [data])
 
 
@@ -282,7 +290,7 @@ useEffect(() => {
         <div id="scroll-steps">
           { data 
             ? data.map((d, i) => (
-              <section className="step" id={`step-${i}`}>
+              <section className="step" id={`step-${i}`} ref={steps[i]}>
                 <InfoCard d={d}/>
               </section>
             ))
