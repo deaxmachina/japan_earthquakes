@@ -70,6 +70,7 @@ const PinnedVictimsMagnitude = () => {
   useEffect(() => {
 
     if (data) {
+    const deathsData = _.find(data, { 'name': selectedEarthquake});
     /// SCALES ///
     // Deaths Scale
     // map x number of deaths to one circle 
@@ -109,7 +110,6 @@ const PinnedVictimsMagnitude = () => {
     // 2. Force graph for the death circles 
     // 2.1. Prep the data 
     // need an array of objects for the force layout
-    const deathsData = _.find(data, { 'name': selectedEarthquake});
     let nodes = _.range(deathsToCircles(deathsData.deaths))
     nodes = Array.from({length: nodes.length}, (j, i) => ({
       id: Math.random(),
@@ -118,7 +118,7 @@ const PinnedVictimsMagnitude = () => {
     // 2.2. Create the circles that correspond to the deaths 
     const node = gVictimsGraph 
       .selectAll(".circle")
-      .data(nodes)
+      .data(nodes, d => d)
       .join("circle")
         .attr("class", "circle")
         .attr("r", 3) // give them a fixed radius to start from 
@@ -166,7 +166,11 @@ const PinnedVictimsMagnitude = () => {
     // 3.2 Arcs for the axis
     const magnitudesAxis = g => g
       .attr("text-anchor", "middle")
-      .call(g => g.append("text")
+      .call(g => g
+        .selectAll(".magnitude-text")
+        .data(d => [d])
+        .join("text")
+        .attr("class", "magnitude-text")
         .attr("y", `-${maxRadius+10}px`)
         .attr("font-size", "12px")
         .attr("fill", "white")
@@ -175,19 +179,24 @@ const PinnedVictimsMagnitude = () => {
         .data(magnitudeScale.ticks(11).slice(2))
         .join("g")
         .attr("fill", "none")
-        .call(g => g.append("circle")
+        .call(g => g
+          .selectAll("circle")
+          .data(d=>[d])
+          .join("circle")
           .attr("stroke", "#ddbea9")
           .attr("stroke-opacity", 0.5)
           .attr("stroke-dasharray", "2,3")
           .attr("r", magnitudeScale))
-        .call(g => g.append("text")
+        .call(g => g
+          .selectAll("text")
+          .data(d => [d])
+          .join("text")
           .attr("y", d => -magnitudeScale(d))
           .attr("dy", "0.35em")
           .attr("stroke", "#fff")
           .attr("stroke-width", 0)
           .attr("font-size", d => `${d*1.25+7}px`)
           .text(d => d)
-          //.text("10")
           .attr("fill", "white")
           .attr("stroke", "white")))
       // call the axis
@@ -198,22 +207,22 @@ const PinnedVictimsMagnitude = () => {
   }
   }, [data, selectedEarthquake])
 
-gsap.registerPlugin(ScrollTrigger);
+
 // GSAP Code //
 useEffect(() => {
-  if (data) {   
+  gsap.registerPlugin(ScrollTrigger); 
     ScrollTrigger.create({
         trigger: svgRef.current,
         //endTrigger: `#step-${data.length - 1}`, // id of the last text box 
-        endTrigger: steps[data.length - 1].current,
+        endTrigger: steps[steps.length - 1].current,
         start: 'center center',
-        end: 'center top',
+        end: 'center center',
         pin: true,
         pinSpacing: false,
         id: 'chart-pin'
     });
     // animation for each of the boxes triggering a change in the graph 
-    data.forEach( (d, i) => {
+    steps.forEach( (d, i) => {
       if (i !== 0){
         ScrollTrigger.create({
           //trigger: `#step-${i}`,
@@ -237,9 +246,9 @@ useEffect(() => {
       } 
     });
 
-    gsap.utils.toArray('.step').forEach(step => {
+    steps.forEach(step => {
       ScrollTrigger.create({
-        trigger: step,
+        trigger: step.current,
         duration: 1,
         start: 'top center',
         end: 'center top',
@@ -247,8 +256,7 @@ useEffect(() => {
         markers: false,
         id: 'toggle-active-class'
       });
-    });
-    }    
+    }); 
 }, [data])
 
 
@@ -283,9 +291,7 @@ useEffect(() => {
           </g> 
           <g id="chart-wrapper-g" ref={victimsGraphRef}>
             <circle ref={victimsCircleRef}></circle>
-          </g>
-          
-          
+          </g> 
         </svg>
         <div id="scroll-steps">
           { data 
@@ -298,11 +304,7 @@ useEffect(() => {
           }    
         </div>
       </div>
-      {
-        d3.range(1).map(i => (
-          <h1>.</h1>
-        ))
-      }
+
     </div>
   )
 };
