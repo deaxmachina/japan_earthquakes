@@ -105,13 +105,13 @@ const PinnedVictimsMagnitude = () => {
     /// GRAPH ///
 
     // 1. Circle around the death circles, i.e. the force graph
+
     const circleDeaths = d3.select(victimsCircleRef.current)
         .attr("r", minRadius - 20)
         .attr("fill", circleDeathsFill)
-        .attr("fill-opacity", 0.9)
+        .attr("fill-opacity", 0)
         .attr("stroke", separatingLineColour)
-        .attr("stroke-width", 1)
-        //.attr("stroke-dasharray", "10,3")
+        .attr("stroke-width", 0)
 
     // 2. Force graph for the death circles 
     // 2.1. Prep the data 
@@ -131,7 +131,7 @@ const PinnedVictimsMagnitude = () => {
         .attr("fill", victimsColour)
         .attr("stroke", victimsColour)
         .attr("stroke-opacity", 0.35)
-        .attr("stroke-width", 5)
+        .attr("stroke-width", 7)
     // 2.3. Add the force simulation 
     function tick() {
         node
@@ -161,7 +161,7 @@ const PinnedVictimsMagnitude = () => {
       .join("path")
       //.style("fill", "maroon")
       .attr("fill", d => magnitudeScaleColour(d.magnitude))
-      .attr("opacity", 0.5)
+      .attr("opacity", 0.6)
       .transition(t)
       .attr("d", d => arc({
         innerRadius: minRadius,
@@ -272,6 +272,7 @@ const PinnedVictimsMagnitude = () => {
         .classed("legendMagnitudeRect", true)
         .attr("width", legendWidth)
         .attr("height", legendHeight)
+        .attr("opacity", 0.6)
         .style("fill", "url(#legend-gradient)")
 
     // the min and max magnidute at each end of the colour legend 
