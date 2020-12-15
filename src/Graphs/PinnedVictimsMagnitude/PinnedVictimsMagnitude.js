@@ -16,6 +16,9 @@ const PinnedVictimsMagnitude = () => {
   const victimsCircleRef = useRef();
   const magnitudeGraphRef = useRef();
   const magnitudesAxisRef = useRef();
+  const legendCircleRef = useRef();
+  const legendMagnitudeRef = useRef();
+  const svgLegendRef = useRef();
   let steps = [
     useRef(), useRef(), useRef(), useRef(), useRef(), useRef(), 
     useRef(), useRef(), useRef(), useRef(), useRef(), useRef(), useRef()
@@ -25,9 +28,11 @@ const PinnedVictimsMagnitude = () => {
   const width = 800;
   const height = width;
   const margin = {top: 10, bottom: 10, right: 10, left: 10}
-  // min and max radius 
-  const minRadius = 160;
-  const maxRadius = 360;
+  // min and max radius for the big circle 
+  const minRadius = 170;
+  const maxRadius = 370;
+  // radius for the victim circles 
+  const victimsRadius = 9;
   // power of magnitude increase -- CHECK this 
   const magnitudePower = 2;
   // colours 
@@ -37,6 +42,7 @@ const PinnedVictimsMagnitude = () => {
   //const magnitudeMaxColour = chroma(magnitudeMinColour).darken(2)
   const victimsColour = "#5C0A27";
   const separatingLineColour = chroma.blend("slategrey", "rgba(255,252,242,0.9)", 'darken');
+  const legendColour = "#fffcf2"
 
 
   /// states /// 
@@ -82,7 +88,7 @@ const PinnedVictimsMagnitude = () => {
       .domain([0, d3.max(data, d => d.magnitude)])   
       .range([minRadius, maxRadius])
     const magnitudeScaleColour = chroma.scale([magnitudeMinColour, magnitudeMaxColour]
-      .map(color => chroma(color).saturate(0)))
+      .map(color => chroma(color).saturate(0.2)))
       .domain([5, d3.max(data, d => d.magnitude)])  
 
 
@@ -100,11 +106,11 @@ const PinnedVictimsMagnitude = () => {
 
     // 1. Circle around the death circles, i.e. the force graph
     const circleDeaths = d3.select(victimsCircleRef.current)
-        .attr("r", minRadius)
+        .attr("r", minRadius - 20)
         .attr("fill", circleDeathsFill)
         .attr("fill-opacity", 0.9)
         .attr("stroke", separatingLineColour)
-        .attr("stroke-width", 5)
+        .attr("stroke-width", 1)
         //.attr("stroke-dasharray", "10,3")
 
     // 2. Force graph for the death circles 
@@ -113,7 +119,7 @@ const PinnedVictimsMagnitude = () => {
     let nodes = _.range(deathsToCircles(deathsData.deaths))
     nodes = Array.from({length: nodes.length}, (j, i) => ({
       id: Math.random(),
-      r: 9,
+      r: victimsRadius,
     }));
     // 2.2. Create the circles that correspond to the deaths 
     const node = gVictimsGraph 
@@ -121,7 +127,7 @@ const PinnedVictimsMagnitude = () => {
       .data(nodes, d => d)
       .join("circle")
         .attr("class", "circle")
-        .attr("r", 3) // give them a fixed radius to start from 
+        .attr("r", 2) // give them a fixed radius to start from 
         .attr("fill", victimsColour)
         .attr("stroke", victimsColour)
         .attr("stroke-opacity", 0.35)
@@ -135,7 +141,7 @@ const PinnedVictimsMagnitude = () => {
     const simulation = d3.forceSimulation(nodes)
       .on("tick", tick)
       .force("collide", d3.forceCollide().radius(d => 1 + d.r))
-      .force("y", d3.forceY( height / 1/4).strength(0.001))
+      .force("y", d3.forceY( height/10).strength(0.002))
       .stop();
     // this is how long it takes for the simulation to happen 
     setTimeout(() => {
@@ -176,7 +182,7 @@ const PinnedVictimsMagnitude = () => {
         .attr("fill", "white")
         .text("magnitude"))
       .call(g => g.selectAll("g")
-        .data(magnitudeScale.ticks(11).slice(2))
+        .data(magnitudeScale.ticks(11).slice(1))
         .join("g")
         .attr("fill", "none")
         .call(g => g
@@ -201,6 +207,105 @@ const PinnedVictimsMagnitude = () => {
           .attr("stroke", "white")))
       // call the axis
       d3.select(magnitudesAxisRef.current).call(magnitudesAxis)
+
+    // 4. Legend  
+    // 4.1. Legend for the circles for the victims
+    const legendCircleGroup = d3.select(legendCircleRef.current)
+      .style("font", "12px sans-serif")
+      .attr("transform", `translate(${0}, ${0})`)
+    const legendCircle = legendCircleGroup
+      .selectAll(".legend-circle")
+      .data([1, 0])
+      .join("circle")
+        .attr("class", "legend-circle")
+        .attr("r", victimsRadius)
+        .attr("fill", d => d==0? victimsColour : circleDeathsFill)
+        .attr("opacity", d => d==0? 1 : 0.9)
+        .attr("stroke", d => d==0? victimsColour : circleDeathsFill)
+        .attr("stroke-opacity", 0.35)
+        .attr("stroke-width", 5)
+    const legendCircleText = legendCircleGroup
+      .selectAll(".legendCircleText")
+      .data([1])
+      .join("text")
+        .classed("legendCircleText", true)
+        .text("1 circle = 1,000 victims (to the nearest 1,000)")
+        .attr("fill", "#fffcf2")
+        .attr("dx", victimsRadius*2)
+        .attr("dy", "0.35em")
+
+    // 4.1. Legend for the magnitude colour 
+    const legendWidth = 100;
+    const legendHeight = 20;
+
+    const legendMagnitudeGroup = d3.select(legendMagnitudeRef.current)
+      .style("font", "12px sans-serif")
+      .attr("transform", `translate(${10}, ${20})`)
+      .attr("fill", legendColour)
+
+    // linear gradient for the magnitude legend // 
+    var defs = legendMagnitudeGroup.append("defs");
+    function getLinearGradient(startColor, endColor, id){
+      const linearGradient = defs.append("linearGradient")
+        .attr("id", id)
+      //Set the color for the start (0%)
+      linearGradient.append("stop") 
+        .attr("offset", "0%")
+        .attr("stop-color", startColor); 
+      //Set the color for the end (100%)
+      linearGradient.append("stop")
+        .attr("offset", "100%")
+        .attr("stop-color", endColor); 
+      return linearGradient
+    }
+    const legendGradient = getLinearGradient(
+      magnitudeScaleColour(d3.min(data, d => d.magnitude)),
+      magnitudeScaleColour(d3.max(data, d => d.magnitude)),
+      "legend-gradient"
+     )
+
+     // rectangle coloured with magnitude scale 
+     const legendMagnitudeRect = legendMagnitudeGroup
+      .selectAll(".legendMagnitudeRect")  
+      .data([1])
+      .join("rect")
+        .classed("legendMagnitudeRect", true)
+        .attr("width", legendWidth)
+        .attr("height", legendHeight)
+        .style("fill", "url(#legend-gradient)")
+
+    // the min and max magnidute at each end of the colour legend 
+    legendMagnitudeGroup
+      .selectAll(".legendMagnitudeGroupMin-text")
+      .data([1])
+      .join("text")
+      .classed("legendMagnitudeGroupMin-text", true)
+        .attr("x", -20)
+        .attr("y", 10)
+        .attr("dy", "0.35em")
+        .text(d3.min(data, d => d.magnitude))
+    legendMagnitudeGroup
+      .selectAll(".legendMagnitudeGroupMax-text")
+      .data([1])
+      .join("text") 
+      .classed("legendMagnitudeGroupMax-text", true)
+        .attr("x", legendWidth + 5)
+        .attr("y", 10)
+        .attr("dy", "0.35em")
+        .text(d3.max(data, d => d.magnitude))
+    const legendMagnitudeText = legendMagnitudeGroup
+      .selectAll(".legendMagnitudeGroupExplain-text")
+      .data([1])
+      .join("text")
+      .classed("legendMagnitudeGroupExplain-text", true)
+        .text("magnitude colour scale")
+        .attr("fill", legendColour)
+        .attr("dx", legendWidth*1.3)
+        .attr("y", 10)
+        .attr("dy", "0.35em")
+        //.attr("font-size", '14px')
+
+
 
   } else {
     console.log("missing data")
@@ -279,6 +384,15 @@ useEffect(() => {
         </p>
         <p>[ work in progress ]</p>
         <p>best viewed on a desktop-sized screen, Chrome browser</p>
+      </div>
+
+      <div className="legend-div" ref={svgLegendRef}>
+        <p>How to read this visualisation</p>
+        <br></br>
+        <svg className="legend-svg">
+          <g ref={legendCircleRef}></g>
+          <g ref={legendMagnitudeRef}></g>
+        </svg>
       </div>
 
       <div id="chart-and-steps">

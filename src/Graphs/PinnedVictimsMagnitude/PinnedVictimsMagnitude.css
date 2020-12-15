@@ -18,8 +18,9 @@ svg {
 .heading-wrapper {
   width: 60%;
   margin: auto;
-  margin-bottom: 5%;
+  margin-bottom: 0%;
   padding: 50px;
+
   text-align: center;
 }
 
@@ -98,11 +99,20 @@ svg {
 }
 
 
-
-
-
 /* styles for the scrolling text boxes */
 .active {
   opacity: 1 !important;
+}
+
+/* for the legend */
+.legend-div {
+  margin: auto;
+  text-align: center;
+  width: 80%;
+}
+
+.legend-svg {
+  display: block;
+  margin: auto;
 }
 
