@@ -7,7 +7,7 @@ import PinnedVictimsMagnitude from "./Graphs/PinnedVictimsMagnitude/PinnedVictim
 const App = () => {
   return (
     <>
-      {/*<CompleteMap />*/}
+      <CompleteMap />
       <PinnedVictimsMagnitude />
     </>
     
