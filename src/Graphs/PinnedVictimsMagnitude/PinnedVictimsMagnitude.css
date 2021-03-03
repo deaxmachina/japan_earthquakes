@@ -47,6 +47,7 @@ svg {
 #chart-wrapper{
 }
 #scroll-steps {
+  z-index: 2;
 }
 
 

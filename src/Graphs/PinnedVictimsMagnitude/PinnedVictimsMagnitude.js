@@ -334,18 +334,6 @@ const PinnedVictimsMagnitude = () => {
       ///////////////////////////////////////////////////////////////
       const mapG = d3.select(mapRef.current)
 
-      // background rect to be deleted 
-      /*
-      const mapBackgound = mapG
-        .selectAll(".map-background-rect")
-        .data([0])
-        .join("rect")
-        .classed("map-background-rect", true)
-          .attr("width", 300)
-          .attr("height", 300)
-          .attr("fill", 'white')
-      */
-
       // projection for Japan (centered at Japan)
       const projection = d3.geoMercator()
           .center([125, 47]) // GPS of location to zoom on
@@ -353,15 +341,31 @@ const PinnedVictimsMagnitude = () => {
           .translate([0,0])
 
       // append the map of Japan
-      mapG.append("g")       
+      const mapJapan = mapG.selectAll(".map-japan-g").data([0]).join("g").classed("map-japan-g", true)    
       .selectAll("path")
       .data(mapData)
-      .enter()
-      .append("path")
+      .join("path")
         .attr("d", d3.geoPath().projection(projection))
         .attr("fill", "white")
         .style("stroke", "none")
         //.attr("transform", "scale(0.4)")
+
+      // append bubbles for the earthquakes 
+      const bubblesEarthquakes = mapG.selectAll(".bubbles-earthquakes-g").data([0]).join("g").classed("bubbles-earthquakes-g", true)  
+      .selectAll("circle")
+      .data(data)
+      .join("circle")
+        .attr("class", "bubbles")
+        .attr("cx", d => projection([d.longitude, d.latitude])[0])
+        .attr("cy", d => projection([d.longitude, d.latitude])[1])
+        .attr("r", 5)
+        .attr("fill", "maroon")
+        .attr("fill-opacity", 0.7)
+        .attr("stroke", "maroon")
+        .attr("stroke-opacity", 1)
+        .on("click", function(e, datum) {
+          console.log(datum)
+        })
     
 
 
@@ -455,18 +459,18 @@ useEffect(() => {
       </div>
 
       <div id="chart-and-steps">
-        <svg id="chart-wrapper" 
-        width={width} 
-        height={height + margin.top} 
-        ref={svgRef}>
-          <g ref={magnitudeGraphRef}>
-            <g ref={magnitudesAxisRef}></g>
-          </g> 
-          <g ref={mapRef}></g>
-          <g id="chart-wrapper-g" ref={victimsGraphRef}>
-            <circle ref={victimsCircleRef}></circle>
-          </g> 
-        </svg>
+        <div id="chart-wrapper" >
+          <svg width={width} height={height + margin.top} ref={svgRef}>
+            <g ref={magnitudeGraphRef}>
+              <g ref={magnitudesAxisRef}></g>
+            </g> 
+            <g ref={mapRef}></g>
+            <g id="chart-wrapper-g" ref={victimsGraphRef}>
+              <circle ref={victimsCircleRef}></circle>
+            </g> 
+          </svg>
+        </div>
+
         <div id="scroll-steps">
           { data 
             ? data.map((d, i) => (

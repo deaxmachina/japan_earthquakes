@@ -9,11 +9,11 @@
     "@testing-library/user-event": "^7.2.1",
     "chroma-js": "^2.1.0",
     "d3": "^6.2.0",
-    "gsap": "^3.5.1",
+    "gsap": "^3.6.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-map-gl": "^5.2.8",
-    "react-scripts": "3.4.3"
+    "react-scripts": "^4.0.3"
   },
   "scripts": {
     "start": "react-scripts start",
