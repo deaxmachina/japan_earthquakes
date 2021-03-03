@@ -10,6 +10,7 @@ import InfoCard from "./InfoCard";
 
 // map 
 const jsonUrlOriginal = 'https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson'
+const jsonUrl = 'https://unpkg.com/world-atlas@2.0.2/countries-50m.json'; // this one is more granular
 
 
 const PinnedVictimsMagnitude = () => {
@@ -53,27 +54,17 @@ const PinnedVictimsMagnitude = () => {
   const [data, setData] = useState(null);
   const [mapData, setMapData] = useState(null);
   const [selectedEarthquake, setSelectedEarthquake] = useState("earthquake-0")
-  const kanto = "1923 Great Kantō earthquake"
+
 
   /// Data Load ///
   useEffect(() => {
     /// For the cirlces ///
     d3.csv(dataLoad, d3.autoType).then(d => {
-      d.forEach(element => {
-        if (element.nameEnglish !== kanto){
-          element.value = element.deaths
-        } else {
-          // just for the Great Kanto Earthquake reduce the size 
-          // so that it's possible to fit it into the screen -- fix this later so that it's accurate!! 
-          element.value = element.deaths 
-        }
-      });
+      d.forEach(element => {element.value = element.deaths});
       // filter only to include largest earthquakes -- now over 5000 deaths
       let filteredData = _.filter(d, function(el) { return el.value >=  5000});
-      //filteredData = _.filter(filteredData, d => d.nameEnglish !== "1923 Great Kantō earthquake");
-      filteredData.forEach((element, i) => {
-        element.name = `earthquake-${i}`
-      })
+      // add earthquakes name to use later more easily with ennumerated steps
+      filteredData.forEach((element, i) => { element.name = `earthquake-${i}` })
       // sort by date 
       filteredData = filteredData.sort((a, b) => a.date - b.date);
       setData(filteredData)
@@ -81,6 +72,7 @@ const PinnedVictimsMagnitude = () => {
 
     /// For the map ///
     d3.json(jsonUrlOriginal).then(d => {
+      // filter out just Japan
       const mapJapan = d.features.filter(el => el.properties.name == 'Japan')
       setMapData(mapJapan)
     })
@@ -90,19 +82,19 @@ const PinnedVictimsMagnitude = () => {
   useEffect(() => {
 
     if (data && mapData) {
+
+    // get the data for the currently selected earthquake 
     const deathsData = _.find(data, { 'name': selectedEarthquake});
     /// SCALES ///
-    // Deaths Scale
-    // map x number of deaths to one circle 
-    // start from 1 circle = 1000 deaths
+    // Deaths Scale - map x number of deaths to one circle; start from 1 circle = 1000 deaths
     const deathsToCircles = numDeaths => Math.round(numDeaths/1000)
-    // Magnitude Scale
+    // Magnitude Scale - use power scale because of the nature of magnitude increase
     const magnitudeScale = d3.scalePow()
       .exponent(magnitudePower)
-      .domain([0, d3.max(data, d => d.magnitude)])   
+      .domain([1, d3.max(data, d => d.magnitude)])   
       .range([minRadius, maxRadius])
     const magnitudeScaleColour = chroma.scale([magnitudeMinColour, magnitudeMaxColour]
-      .map(color => chroma(color).saturate(0.2)))
+      .map(color => chroma(color).saturate(0.5)))
       .domain([5, d3.max(data, d => d.magnitude)])  
 
 
@@ -348,7 +340,6 @@ const PinnedVictimsMagnitude = () => {
         .attr("d", d3.geoPath().projection(projection))
         .attr("fill", "white")
         .style("stroke", "none")
-        //.attr("transform", "scale(0.4)")
 
       // append bubbles for the earthquakes 
       const bubblesEarthquakes = mapG.selectAll(".bubbles-earthquakes-g").data([0]).join("g").classed("bubbles-earthquakes-g", true)  
@@ -358,21 +349,25 @@ const PinnedVictimsMagnitude = () => {
         .attr("class", "bubbles")
         .attr("cx", d => projection([d.longitude, d.latitude])[0])
         .attr("cy", d => projection([d.longitude, d.latitude])[1])
-        .attr("r", 5)
-        .attr("fill", "maroon")
-        .attr("fill-opacity", 0.7)
-        .attr("stroke", "maroon")
-        .attr("stroke-opacity", 1)
-        .on("click", function(e, datum) {
+        .attr("fill-opacity", d => d.name == selectedEarthquake ? 1 : 0)
+        //.attr("stroke", "maroon")
+        //.attr("stroke-opacity", 1)
+        .attr("fill", d => d.name == selectedEarthquake ? "maroon" : 'hotpink')
+        .attr("r", 0)
+        .transition()
+          .attr("r", 6)
+
+      /*
+      bubblesEarthquakes.on("click", function(e, datum) {
           console.log(datum)
+          console.log(selectedEarthquake)
         })
+      */
     
 
 
 
-  } else {
-    console.log("missing data")
-  }
+  } 
   }, [data, selectedEarthquake, mapData])
 
 
@@ -413,7 +408,6 @@ useEffect(() => {
         });
       } 
     });
-
     steps.forEach(step => {
       ScrollTrigger.create({
         trigger: step.current,
@@ -470,7 +464,6 @@ useEffect(() => {
             </g> 
           </svg>
         </div>
-
         <div id="scroll-steps">
           { data 
             ? data.map((d, i) => (

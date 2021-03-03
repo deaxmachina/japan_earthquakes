@@ -13,7 +13,8 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-map-gl": "^5.2.8",
-    "react-scripts": "^4.0.3"
+    "react-scripts": "^4.0.3",
+    "topojson-client": "^3.1.0"
   },
   "scripts": {
     "start": "react-scripts start",

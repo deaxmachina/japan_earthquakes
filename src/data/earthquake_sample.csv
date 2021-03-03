@@ -1,11 +1,11 @@
 date,magnitude,deaths,name,latitude,longitude
 "March 11, 2011",9.1,"15899",2011 Tohoku earthquake,38.510,142.792
 "September 20, 1498",8.6,"31000",1498 Nankai earthquake,34.0,138.1
-"September 25, 2003",8.3,12,003 Hokkaido earthquake,41.78,143.86
-"December 7, 1944",8.1,"1223",1944 Tounankai earthquake,34.0,137.1
+"September 25, 2003",8.3,12,2003 Hokkaido earthquake,41.78,143.86
+"December 7, 1944",8.1,"1223",Tounankai earthquake,34.0,137.1
 "March 4, 1952",8.1,28,1952 Hokkaido earthquake,42.3,144.9
-"December 2, 1611",8.1,"2000",1611 Sanriku earthquake,39.0,144.4
+"December 2, 1611",8.1,"2000",Sanriku earthquake,39.0,144.4
 "February 3, 1605",7.9,"5000",1605 Nankai earthquake,33.5,138.5
 "July 12, 1993",7.7,202,1993 Hokkaido earthquake,42.851,139.197
-"May 27, 1293(G)",7.1,"23024",1293 Kamakura earthquake,35.2,139.4
-"September 1, 1923",8.3,"142800",1923 Great Kanto earthquake,34.44,139.23
+"May 27, 1293(G)",7.1,"23024",Kamakura earthquake,35.2,139.4
+"September 1, 1923",8.3,"142800",Great Kanto earthquake,34.44,139.23

@@ -1,0 +1,107 @@
+:root {
+  --red-colour: #370617;
+  --black-colour: #161a1d;
+  --white-colour: #fffcf2;
+}
+
+
+/*****************************/
+/********* Containers ********/
+/*****************************/
+
+/* Main container for the chart and text */
+#chart-and-steps-concentric{
+  display: flex;
+  justify-content: space-evenly;
+  width: 90%;
+  margin: auto;
+}
+
+/* Graph container */
+#chart-wrapper-concentric {
+  overflow: hidden;
+}
+
+/* Cards container */
+#scroll-steps-concentric {
+  z-index: 2; /* want it to be on top of the graph if they overlap */
+}
+
+
+/*****************************/
+/******** Card Styles ********/
+/*****************************/
+
+/* Styles for the info boxes */
+.step {
+  font-family: 'Raleway', sans-serif;
+  margin-bottom: 70vh;
+  opacity: 0.2;
+  font-size: 14px;
+}
+
+#step-12 {
+  margin-bottom: 30vh;
+}
+
+.info-card {
+  margin: auto;
+  text-align: left;
+  padding: 15px;
+  border-radius: 20px;
+  border: 4px solid var(--red-colour);
+  color: var(--black-colour);
+  background-color: var(--white-colour);
+  box-shadow: 0px 0px 20px 20px rgba(0, 0, 0, 0.2);
+  width: 300px;
+}
+
+.earthquake-name {
+  font-size: 28px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.earthquake-name-ja {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.info-card .earthquake-name-ja {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.info-card .earthquake-date {
+  text-transform: uppercase;
+}
+
+.info-card .number {
+  font-weight: bold;
+}
+
+.info-card hr {
+  text-align: center;
+  border: 0;
+  border-bottom: 2px solid var(--red-colour);
+  border-radius: 15px;
+  width: 100%;
+  opacity: 0;
+}
+
+.info-year {
+  font-size:28px;
+  text-align: center;
+  padding: 0;
+  color: var(--white-colour)
+}
+
+.earthquake-date, .magnitude, .deaths {
+  margin-left: auto;
+  margin-right: auto;
+  width: 150px;
+}
+
+/* when cards are active make them visible */
+.active {
+  opacity: 1 !important;
+}
