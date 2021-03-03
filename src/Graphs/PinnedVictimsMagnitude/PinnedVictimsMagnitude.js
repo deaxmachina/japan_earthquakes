@@ -8,6 +8,9 @@ import "./PinnedVictimsMagnitude.css";
 import dataLoad from "../../data/earthquakes_sample.csv"
 import InfoCard from "./InfoCard";
 
+// map 
+const jsonUrlOriginal = 'https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson'
+
 
 const PinnedVictimsMagnitude = () => {
   /// refs ///
@@ -19,6 +22,7 @@ const PinnedVictimsMagnitude = () => {
   const legendCircleRef = useRef();
   const legendMagnitudeRef = useRef();
   const svgLegendRef = useRef();
+  const mapRef = useRef();
   let steps = [
     useRef(), useRef(), useRef(), useRef(), useRef(), useRef(), 
     useRef(), useRef(), useRef(), useRef(), useRef(), useRef(), useRef()
@@ -47,10 +51,13 @@ const PinnedVictimsMagnitude = () => {
 
   /// states /// 
   const [data, setData] = useState(null);
+  const [mapData, setMapData] = useState(null);
   const [selectedEarthquake, setSelectedEarthquake] = useState("earthquake-0")
   const kanto = "1923 Great Kantō earthquake"
 
+  /// Data Load ///
   useEffect(() => {
+    /// For the cirlces ///
     d3.csv(dataLoad, d3.autoType).then(d => {
       d.forEach(element => {
         if (element.nameEnglish !== kanto){
@@ -71,11 +78,18 @@ const PinnedVictimsMagnitude = () => {
       filteredData = filteredData.sort((a, b) => a.date - b.date);
       setData(filteredData)
     })
+
+    /// For the map ///
+    d3.json(jsonUrlOriginal).then(d => {
+      const mapJapan = d.features.filter(el => el.properties.name == 'Japan')
+      setMapData(mapJapan)
+    })
+
   }, [])
 
   useEffect(() => {
 
-    if (data) {
+    if (data && mapData) {
     const deathsData = _.find(data, { 'name': selectedEarthquake});
     /// SCALES ///
     // Deaths Scale
@@ -102,7 +116,11 @@ const PinnedVictimsMagnitude = () => {
       .style("font", "10px sans-serif")
       .attr("transform", `translate(${width/2}, ${height/2})`)
 
-    /// GRAPH ///
+
+    
+    ///////////////////////////////////////////////////////////////
+    ////////////////////// CIRCLES GRAPH //////////////////////////
+    ///////////////////////////////////////////////////////////////
 
     // 1. Circle around the death circles, i.e. the force graph
 
@@ -208,6 +226,11 @@ const PinnedVictimsMagnitude = () => {
       // call the axis
       d3.select(magnitudesAxisRef.current).call(magnitudesAxis)
 
+
+    ///////////////////////////////////////////////////////////////
+    ////////////////////////// LEGEND /////////////////////////////
+    ///////////////////////////////////////////////////////////////
+
     // 4. Legend  
     // 4.1. Legend for the circles for the victims
     const legendCircleGroup = d3.select(legendCircleRef.current)
@@ -306,12 +329,47 @@ const PinnedVictimsMagnitude = () => {
         .attr("dy", "0.35em")
         //.attr("font-size", '14px')
 
+      ///////////////////////////////////////////////////////////////
+      /////////////////////////// MAP ////////////////////////////////
+      ///////////////////////////////////////////////////////////////
+      const mapG = d3.select(mapRef.current)
+
+      // background rect to be deleted 
+      /*
+      const mapBackgound = mapG
+        .selectAll(".map-background-rect")
+        .data([0])
+        .join("rect")
+        .classed("map-background-rect", true)
+          .attr("width", 300)
+          .attr("height", 300)
+          .attr("fill", 'white')
+      */
+
+      // projection for Japan (centered at Japan)
+      const projection = d3.geoMercator()
+          .center([125, 47]) // GPS of location to zoom on
+          .scale(800)  // This is like the zoom
+          .translate([0,0])
+
+      // append the map of Japan
+      mapG.append("g")       
+      .selectAll("path")
+      .data(mapData)
+      .enter()
+      .append("path")
+        .attr("d", d3.geoPath().projection(projection))
+        .attr("fill", "white")
+        .style("stroke", "none")
+        //.attr("transform", "scale(0.4)")
+    
+
 
 
   } else {
     console.log("missing data")
   }
-  }, [data, selectedEarthquake])
+  }, [data, selectedEarthquake, mapData])
 
 
 // GSAP Code //
@@ -404,6 +462,7 @@ useEffect(() => {
           <g ref={magnitudeGraphRef}>
             <g ref={magnitudesAxisRef}></g>
           </g> 
+          <g ref={mapRef}></g>
           <g id="chart-wrapper-g" ref={victimsGraphRef}>
             <circle ref={victimsCircleRef}></circle>
           </g> 
