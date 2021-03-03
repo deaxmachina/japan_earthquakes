@@ -52,7 +52,7 @@ const ConcentricCircles = () => {
   const [data, setData] = useState(null);
   const [mapData, setMapData] = useState(null);
   const [magnitudes, setMagnitudes] = useState([3, 4, 5, 6, 7, 8, 9])
-  const [selectedEarthquake, setSelectedEarthquake] = useState("earthquake-0")
+  const [selectedEarthquake, setSelectedEarthquake] = useState(null)
 
   /// Data Load ///
   useEffect(() => {
@@ -61,11 +61,13 @@ const ConcentricCircles = () => {
       d.forEach(element => {element.value = element.deaths});
       // filter only to include largest earthquakes -- now over 5000 deaths
       let filteredData = _.filter(d, function(el) { return el.value >=  5000});
-      // add earthquakes name to use later more easily with ennumerated steps
-      filteredData.forEach((element, i) => { element.name = `earthquake-${i}` })
       // sort by date 
       filteredData = filteredData.sort((a, b) => a.date - b.date);
+      // add earthquakes name to use later more easily with ennumerated steps
+      filteredData.forEach((element, i) => { element.name = `earthquake-${i}` })
+
       setData(filteredData)
+      setSelectedEarthquake('earthquake-0')
     })
 
     /// For the map ///
@@ -83,6 +85,7 @@ const ConcentricCircles = () => {
     if (data && mapData) {
         // get the data for the currently selected earthquake 
         const deathsData = _.find(data, { 'name': selectedEarthquake});
+        console.log(selectedEarthquake)
         // reorder the data so that the selected earthquake is on top - this helps with the appending of elements
         let dataOrdered = [...data];
         dataOrdered = dataOrdered.filter(d => d !== deathsData)
