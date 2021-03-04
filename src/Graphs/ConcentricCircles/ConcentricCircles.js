@@ -20,9 +20,6 @@ const ConcentricCircles = () => {
   const magnitudeGraphRef = useRef();
   const magnitudesAxisRef = useRef();
 
-  const legendCircleRef = useRef();
-  const legendMagnitudeRef = useRef();
-  const svgLegendRef = useRef();
   
   let steps = [
     useRef(), useRef(), useRef(), useRef(), useRef(), useRef(), 
@@ -33,6 +30,7 @@ const ConcentricCircles = () => {
   /// Responsive dimensions ///
   const width = 1100;
   const height = 600;
+  const margin = {top: 30, right: 0, bottom: 0, left: 0}
   const victimsRadius = 9; // radius for the victim circles 
   const victimsBackgroundRadius = 150; // radius of the background for the victim circles
   const fitToScreenFactor = 1.95; // helps with the custom power scale for the magnitudes - use this to fit into screens 
@@ -44,7 +42,7 @@ const ConcentricCircles = () => {
   // colours 
   const magnitudeMinColour = chroma("#7d8597").brighten(0.5);
   const magnitudeMaxColour = chroma("#004666").brighten(0.1);
-  const victimsColour = "#5C0A27";
+  const victimsColour = "#701A38"  //"#5C0A27" "#501A2D"
   const whiteColour = "#fffcf2";
 
 
@@ -112,13 +110,13 @@ const ConcentricCircles = () => {
         /// SVG  define ///
         // the group for the force graph with deaths circles 
         const gVictimsGraph = d3.select(victimsGraphRef.current)  
-          .attr("transform", `translate(${maxMagnitudeScaled + victimsBackgroundRadius + 10}, ${maxMagnitudeScaled/2})`)
+          .attr("transform", `translate(${maxMagnitudeScaled + victimsBackgroundRadius + 10}, ${maxMagnitudeScaled/2 + margin.top})`)
         // the group for the magnitudes graph 
         const gMagnitudeGraph = d3.select(magnitudeGraphRef.current) 
-          .attr("transform", `translate(${maxMagnitudeScaled}, ${maxMagnitudeScaled/2})`)
+          .attr("transform", `translate(${maxMagnitudeScaled}, ${maxMagnitudeScaled/2 + margin.top})`)
         // map 
         const mapG = d3.select(mapRef.current)
-          .attr("transform", `translate(${width/2 + mapXOffset}, ${height/2 + mapYOffset})`)
+          .attr("transform", `translate(${width/2 + mapXOffset}, ${height/2 + mapYOffset + margin.top})`)
 
         /// Animation ///
         const t = d3.transition().duration(500);
@@ -163,10 +161,26 @@ const ConcentricCircles = () => {
             .join("text")
             .classed('magnitude-circle-axis-text ', true)
             .attr("x", d => -2 * magnitudeScale(d))
-            .attr("dx", "-1.2em")
+            //.attr("dx", "-1.2em")
             .attr("fill", whiteColour)
             .attr("text-anchor", "middle")
+            .attr("opacity", 0.5)
             .text(d => d);
+
+        // text in the middle of magnitude circle with magnitude 
+        const magnitudeText = gMagnitudeGraph         
+          .selectAll(".magnitude-text")
+          .data(dataOrdered)
+          .join("text")
+          .classed('magnitude-text', true)
+            .attr("fill", whiteColour)
+            .attr("x", d => -magnitudeScale(d.magnitude))
+            .attr("y", d => -magnitudeScale(d.magnitude))
+            .attr("font-size", '20px')
+            .attr("dy", "-0.6em")
+            .style("text-anchor", 'middle')
+            .text(d => "M" + d.magnitude)
+            .attr("opacity", d => d == deathsData ? 1 : 0) // only the currently selected one is visible
 
 
         ///////////////////////////////////////////////////////////////
@@ -228,6 +242,21 @@ const ConcentricCircles = () => {
             .attr("stroke-opacity", 1)
             .attr("stroke-dasharray", '1 2')
 
+        // text on top of the surrouding circle displaying the number of deaths
+        const circleDeathsText = gVictimsGraph         
+          .selectAll(".victims-text")
+          .data(dataOrdered)
+          .join("text")
+          .classed('victims-text', true)
+            .attr("fill", victimsColour)
+            .attr("x", 0)
+            .attr("y", -victimsBackgroundRadius)
+            .attr("font-size", '20px')
+            .attr("dy", "-0.6em")
+            .style("text-anchor", 'middle')
+            .text(d => d3.format(",.2r")(d.deaths.toString()) + " deaths")
+            .attr("opacity", d => d == deathsData ? 1 : 0) // only the currently selected one is visible
+
         // 2. Force graph for the death circles 
         // 2.1. Prep the data 
         // need an array of objects for the force layout
@@ -246,7 +275,7 @@ const ConcentricCircles = () => {
             .attr("r", 2) // give them a fixed radius to start from 
             .attr("fill", victimsColour)
             .attr("stroke", victimsColour)
-            .attr("stroke-opacity", 0.35)
+            .attr("stroke-opacity", 0.5)
             .attr("stroke-width", 4)
 
         // 2.3. Add the force simulation 

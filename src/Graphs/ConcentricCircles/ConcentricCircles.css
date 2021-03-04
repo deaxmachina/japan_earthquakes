@@ -105,3 +105,56 @@
 .active {
   opacity: 1 !important;
 }
+
+/*****************************/
+/******* Legend Styles *******/
+/*****************************/
+
+#legend {
+  font-family: 'Raleway', sans-serif;
+  width: 60%;
+  color: var(--white-colour);
+  text-align: center;
+  margin: auto;
+  margin-bottom: 100px;
+}
+
+.legend-grid-magnitudes, .legend-grid-victims {
+  display: flex;
+  justify-content: space-between;
+  width: 60%;
+  margin: auto;
+  align-items: center;
+}
+
+.legend-explanation-magnitudes, .legend-explanation-victims {
+  text-align: left;
+  margin-left: 10px;
+  font-size: 14px;
+}
+
+.legend-explanation-p-victims, .legend-explanation-p-magnitudes {
+  opacity: 0.9;
+}
+
+.legend-explanation-title-magnitudes, .legend-explanation-title-victims {
+  margin-bottom: 10px;
+  padding: 5px;
+  font-weight: bold;
+  background-color: var(--white-colour);
+  color: #161a1d;
+}
+
+
+@media(max-width: 1000px) {
+  .legend-grid-magnitudes, .legend-grid-victims {
+    width: 100%;
+  }
+}
+
+@media(max-width: 700px) {
+  .legend-grid-magnitudes, .legend-grid-victims {
+    width: 100%;
+    flex-direction: column;
+  }
+}
