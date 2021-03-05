@@ -7,17 +7,15 @@ const Hero = () => {
     <>
     <section id="hero">
       <h1 className="hero-heading">Earthaquke Disasters in Japan</h1> 
-      <h2 className="hero-subheading"> in the last 1000 years</h2>  
+      <h2 className="hero-subheading"> in the last 1,000 years</h2>  
       <div class="pulsating-circle"></div> 
       <p className="hero-explanation">
           There have been many devstating earthquakes in Japanese history. 
-          How does the damage done and number of casualties compare over time? 
-          Were the largest earthquakes the most destructive, or are there other factors at play? 
-          Are the improved building stardards helping reduce the amount of destruction done 
-          by large earthquakes? We examine below the earthquakes over the last 1000 years with 
-          recorded victims over 5000 people. 
+          There are a multitude of factors at play that determine the scale of the destruction and casualties claimed 
+          by these calamitous phenomena, most promimently, in the case of Japan, the risk of tsunami. 
+          Magnitude alone doesn't give the full picture, as we can see on the visualisation below, in which we compare 
+          the magnitude and casualities of the most destructive earthquakes in Japan over the last 1,000 years.
         </p>
-        <p className="hero-disclaimer">best viewed on a desktop-sized screen, Chrome browser</p>
     </section>
     </>
   )

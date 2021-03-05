@@ -16,8 +16,8 @@ const Legend = () => {
   const [magnitudes, setMagnitudes] = useState([3, 4, 5, 6, 7, 8, 9])
 
   /// dimensions ///
-  const width = 150;
-  const height = 150;
+  const width = 120;
+  const height = 122;
 
   // colours 
   const magnitudeMinColour = chroma("#7d8597").brighten(0.5);
@@ -30,7 +30,7 @@ const Legend = () => {
 
     /// Select Containers ///
     const magnitudesG = d3.select(gMagnituesRef.current)
-      .attr("transform", `translate(${140}, ${70})`)
+      .attr("transform", `translate(${110}, ${70})`)
     const victimsG = d3.select(gVictimsRef.current)
       .attr("transform", `translate(${width/2}, ${height/2})`)
 
@@ -41,7 +41,7 @@ const Legend = () => {
     // Magnitude Scale - use power scale because of the nature of magnitude increase
     const magnitudeScale = (rawMagnitude) => {
       const power = 2; // if 2 then each is 4 times sctronger than the previous 
-      const scale = 8; // so that we can fit it into the screen
+      const scale = 10; // so that we can fit it into the screen
       return Math.pow(power, rawMagnitude) / scale
     }
 
@@ -93,6 +93,8 @@ const Legend = () => {
     <>
       <section id="legend">
 
+        <p className="legend-title">How to read this visualisation</p><br/>
+
         <div className="legend-grid-magnitudes">
           <div className="legend-graph-wrapper-magnitudes">
             <svg ref={svgMagnitudesRef} width={width} height={height}><g ref={gMagnituesRef}></g></svg>
@@ -102,7 +104,7 @@ const Legend = () => {
             <p className="legend-explanation-p-magnitudes">
               The Richter magnitude scale is logarithmic, meaning that each consequitive magnitude 
               represents the release of energy many times greater than the previous one (about 32 times greater). 
-              For example, a magnitude 9.0 earthquake releases over a million times as much energy as a 
+              Therefore, a magnitude 9.0 earthquake releases over a million times as much energy as a 
               magnitude 5.0 earthquake. We represeted this exponential icrease by making the radius of each 
               magnitude circle twice bigger than the preceeding one.             
             </p>

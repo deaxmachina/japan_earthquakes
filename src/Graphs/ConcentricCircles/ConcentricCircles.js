@@ -11,7 +11,7 @@ import InfoCard from "./InfoCard";
 // map 
 const jsonUrlOriginal = 'https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson'
 
-const ConcentricCircles = () => {
+const ConcentricCircles = ({ width, fitToScreenFactor, victimsBackgroundRadius, victimsRadius, mapZoom, mapXOffset }) => {
 
   /// refs ///
   const svgRef = useRef();
@@ -28,15 +28,15 @@ const ConcentricCircles = () => {
 
   /// Dimensions ///
   /// Responsive dimensions ///
-  const width = 1100;
+  //const width = 1100;
   const height = 600;
   const margin = {top: 30, right: 0, bottom: 0, left: 0}
-  const victimsRadius = 9; // radius for the victim circles 
-  const victimsBackgroundRadius = 150; // radius of the background for the victim circles
-  const fitToScreenFactor = 1.95; // helps with the custom power scale for the magnitudes - use this to fit into screens 
-  const mapXOffset = -530; // how much to move map in x direction relative to width/2
+  //const victimsRadius = 9; // radius for the victim circles 
+  //const victimsBackgroundRadius = 150; // radius of the background for the victim circles
+  //const fitToScreenFactor = 1.95; // helps with the custom power scale for the magnitudes - use this to fit into screens 
+  //const mapXOffset = -530; // how much to move map in x direction relative to width/2
   const mapYOffset = -280; // how much to move map in the y direction relative to height/2
-  const mapZoom = 600; 
+  //const mapZoom = 600; 
   const radiusEarthquakeOnMap = 10; // how big the circle of earthquake should be on map
 
   // colours 
@@ -286,19 +286,20 @@ const ConcentricCircles = () => {
         }
         const simulation = d3.forceSimulation(nodes)
             .on("tick", tick)
-            .force("collide", d3.forceCollide().radius(d => 1 + d.r))
+            .force("collide", d3.forceCollide().radius(victimsRadius + 2))
+            .force('radial', d3.forceRadial(1))
             .force("y", d3.forceY( height/10).strength(0.002))
             .stop();
 
         // this is how long it takes for the simulation to happen 
         setTimeout(() => {
             simulation.restart();
-            node.transition().attr("r", d => d.r);
+            node.transition().attr("r", d => victimsRadius);
         }, 100);
         // show the initial arrangement
         tick();
     }
-  }, [data, mapData, selectedEarthquake])
+  }, [data, mapData, selectedEarthquake, width, fitToScreenFactor, victimsBackgroundRadius, victimsRadius, mapZoom, mapXOffset])
 
 // GSAP Code //
 useEffect(() => {

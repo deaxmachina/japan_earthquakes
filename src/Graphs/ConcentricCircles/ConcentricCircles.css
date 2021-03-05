@@ -112,17 +112,17 @@
 
 #legend {
   font-family: 'Raleway', sans-serif;
-  width: 60%;
+  width: 100%;
   color: var(--white-colour);
   text-align: center;
   margin: auto;
-  margin-bottom: 100px;
+  margin-bottom: 140px;
 }
 
 .legend-grid-magnitudes, .legend-grid-victims {
   display: flex;
   justify-content: space-between;
-  width: 60%;
+  width: 40%;
   margin: auto;
   align-items: center;
 }
@@ -138,23 +138,34 @@
 }
 
 .legend-explanation-title-magnitudes, .legend-explanation-title-victims {
-  margin-bottom: 10px;
-  padding: 5px;
+  margin-bottom: 7px;
+  padding: 0px;
   font-weight: bold;
-  background-color: var(--white-colour);
-  color: #161a1d;
+  color: var(--white-colour);
+  text-decoration: underline;
+}
+
+.legend-title {
+  font-size: 24px;
 }
 
 
 @media(max-width: 1000px) {
   .legend-grid-magnitudes, .legend-grid-victims {
-    width: 100%;
+    width: 70%;
   }
 }
 
-@media(max-width: 700px) {
+@media(max-width: 600px) {
   .legend-grid-magnitudes, .legend-grid-victims {
-    width: 100%;
+    width: 80%;
     flex-direction: column;
+
   }
+  .legend-explanation-title-magnitudes {
+    margin-top: 10px;
+    }
+  .legend-explanation-title-victims {
+    margin-top: -30px;
+    }
 }
