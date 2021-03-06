@@ -6,6 +6,7 @@ import CompleteMap from "./Maps/CompleteMap";
 import ConcentricCircles from "./Graphs/ConcentricCircles/ConcentricCircles"
 import Hero from "./Graphs/Hero/Hero";
 import Legend from "./Graphs/ConcentricCircles/Legend";
+import Footer from "./Graphs/Footer/Footer";
 
 const App = () => {
 
@@ -38,6 +39,7 @@ const App = () => {
         mapZoom={windowWidth > 1000 ? 600 : windowWidth > 600 ? 400 : 200}
         mapXOffset={windowWidth > 1000 ? -530 : windowWidth > 600 ? -400 : -170}
       />
+      <Footer />
     </>
     
   )

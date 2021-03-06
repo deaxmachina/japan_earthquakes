@@ -100,13 +100,13 @@ const Legend = () => {
             <svg ref={svgMagnitudesRef} width={width} height={height}><g ref={gMagnituesRef}></g></svg>
           </div>
           <div className="legend-explanation-magnitudes">
-            <p className="legend-explanation-title-magnitudes">magnitude circles - exponentially bigger</p>
+            <p className="legend-explanation-title-magnitudes">each circle is a magnitude</p>
             <p className="legend-explanation-p-magnitudes">
-              The Richter magnitude scale is logarithmic, meaning that each consequitive magnitude 
+              The Richter magnitude scale is logarithmic, meaning that each consecutive magnitude 
               represents the release of energy many times greater than the previous one (about 32 times greater). 
               Therefore, a magnitude 9.0 earthquake releases over a million times as much energy as a 
-              magnitude 5.0 earthquake. We represeted this exponential icrease by making the radius of each 
-              magnitude circle twice bigger than the preceeding one.             
+              magnitude 5.0 earthquake. We represented this exponential increase by making the radius of each 
+              magnitude circle twice bigger than the preceding one.             
             </p>
           </div>
         </div>
