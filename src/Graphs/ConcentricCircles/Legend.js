@@ -93,7 +93,7 @@ const Legend = () => {
     <>
       <section id="legend">
 
-        <p className="legend-title">How to read this visualisation</p><br/>
+        {/* <p className="legend-title">How to read this visualisation</p><br/> */}
 
         <div className="legend-grid-magnitudes">
           <div className="legend-graph-wrapper-magnitudes">

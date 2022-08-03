@@ -5,10 +5,13 @@ const Hero = () => {
 
   return (
     <>
+    {/* <div class="pulsating-circle"></div>  */}
     <section id="hero">
-      <h1 className="hero-heading">Earthquake Disasters in Japan</h1> 
-      <h2 className="hero-subheading"> in the last 1,000 years</h2>  
-      <div class="pulsating-circle"></div> 
+      <div>
+        <h1 className="hero-heading">Earthquake Disasters in Japan</h1> 
+        <h2 className="hero-subheading"> in the last 1,000 years</h2>  
+      </div>
+ 
       <p className="hero-explanation">
           There have been many devastating earthquakes in Japanese history. 
           A multitude of factors determine the scale of the destruction and casualties claimed 

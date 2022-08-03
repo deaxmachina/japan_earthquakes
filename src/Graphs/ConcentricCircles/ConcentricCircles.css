@@ -1,7 +1,7 @@
 :root {
   --red-colour: #370617;
   --black-colour: #161a1d;
-  --white-colour: #fffcf2;
+  --white-colour: #f7ede2;;
 }
 
 
@@ -34,10 +34,9 @@
 
 /* Styles for the info boxes */
 .step {
-  font-family: 'Raleway', sans-serif;
   margin-bottom: 70vh;
   opacity: 0.2;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 #step-12 {
@@ -111,30 +110,42 @@
 /*****************************/
 
 #legend {
-  font-family: 'Raleway', sans-serif;
   width: 100%;
+  max-width: 800px;
   color: var(--white-colour);
   text-align: center;
   margin: auto;
   margin-bottom: 140px;
+  /* border: 2px solid red; */
 }
 
 .legend-grid-magnitudes, .legend-grid-victims {
   display: flex;
   justify-content: space-between;
-  width: 40%;
+  min-width: 700px;
   margin: auto;
   align-items: center;
+}
+
+@media (max-width: 600px) {
+  .legend-grid-magnitudes, .legend-grid-victims {
+    min-width: 300px;
+  }
 }
 
 .legend-explanation-magnitudes, .legend-explanation-victims {
   text-align: left;
   margin-left: 10px;
-  font-size: 14px;
+  font-size: 16px;
+  font-weight: 200;
+  /* width: 100%;
+  max-width: 500px; */
 }
 
 .legend-explanation-p-victims, .legend-explanation-p-magnitudes {
   opacity: 0.9;
+  font-family: 'Open Sans', sans-serif;
+  line-height: 1.6;
 }
 
 .legend-explanation-title-magnitudes, .legend-explanation-title-victims {
@@ -142,7 +153,8 @@
   padding: 0px;
   font-weight: bold;
   color: var(--white-colour);
-  text-decoration: underline;
+  /* text-decoration: underline; */
+  font-family: 'Open Sans', sans-serif;
 }
 
 .legend-title {

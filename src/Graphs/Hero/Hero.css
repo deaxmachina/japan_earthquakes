@@ -1,20 +1,42 @@
 
 #hero {
-  font-family: 'Raleway', sans-serif;
   color: var(--white-colour);
   margin: auto;
   margin-top: 70px;
   margin-bottom: 70px;
   position: relative;
-  width: 60%;
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 
 .hero-heading {
   font-size: 56px;
   color: var(--white-colour);
-  text-align: center;
+  text-align: right;
+  margin-right: 40px;
   font-weight: 400;
   z-index: 2;
+  line-height: 1.4;
+  /* margin-top: 100px; */
+}
+
+@media (max-width: 1050px) {
+  #hero {
+    flex-direction: column;
+  }
+  .hero-heading {
+    text-align: center;
+    margin-right: auto
+  }
+}
+
+@media (max-width: 600px) {
+  .hero-heading {
+    font-size: 48px;
+  }
 }
 
 .hero-subheading {
@@ -26,20 +48,32 @@
 }
 
 .hero-explanation, .hero-disclaimer {
-  font-size: 14px;
-  line-height: 1.3;
+  font-size: 22px;
+  line-height: 1.6;
   margin: auto;
-  font-family: 'Raleway', sans-serif;
   opacity: 0.9;
+  font-weight: 200;
+  color: #f7ede2;
 }
+
+
+/* .pulsating-circle {
+  position: absolute;
+  left: 50%;
+  top: -70px;
+  transform: translateX(-50%) translateY(0);
+  width: 30px;
+  height: 30px;
+  z-index: 0;
+} */
 
 .pulsating-circle {
   position: absolute;
-  left: 50%;
-  top: 130px;
-  transform: translateX(-50%) translateY(-50%);
-  width: 30px;
-  height: 30px;
+  left: 30%;
+  top: 200px;
+  transform: translateX(-30%) translateY(0);
+  width: 50px;
+  height: 50px;
   z-index: 0;
 }
 
@@ -52,9 +86,10 @@
   box-sizing: border-box;
   margin-left: -100%;
   margin-top: -100%;
-  border-radius: 45px;
-  background-color: #004666;
-  animation: pulse-ring 3.25s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+  /* border-radius: 45px; */
+  border-radius: 150px;
+  background-color: #00466680;
+  animation: pulse-ring 4s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
 }
 
 .pulsating-circle:after {
@@ -65,10 +100,11 @@
   display: block;
   width: 100%;
   height: 100%;
-  background-color: #161a1d;
-  border-radius: 15px;
+  background-color: #10111a;
+  /* border-radius: 15px; */
+  border-radius: 60px;
   box-shadow: 0 0 8px rgba(0,0,0,.3);
-  animation: pulse-dot 3.25s cubic-bezier(0.455, 0.03, 0.515, 0.955) -.4s infinite;
+  animation: pulse-dot 4s cubic-bezier(0.455, 0.03, 0.515, 0.955) -.4s infinite;
 }
 
 @keyframes pulse-ring {
